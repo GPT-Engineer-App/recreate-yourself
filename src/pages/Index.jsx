@@ -12,15 +12,26 @@ const Index = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ inputText }),
-    });
-    const data = await response.json();
-    setOutputText(data.output);
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputText }),
+      });
+      const data = await response.json();
+      setOutputText(data.output);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An error occurred while generating the response.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
     setLoading(false);
   };
 
